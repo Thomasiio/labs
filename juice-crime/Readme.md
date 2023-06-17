@@ -3,6 +3,9 @@ Ideas
 # config option of how many total labs
 # allow gang leaders to buy a lab for a set lab price depending on the type of lab
 
+# if a database table exists end otherwise create the table
+trigger event to create a database table with gangId, name of gang, lab type, lab price, lab fee
+
 # leader purchases a lab
  trigger an event to add the lab to a table in the database
 
