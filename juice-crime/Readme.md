@@ -19,3 +19,19 @@ Ideas
 
 # ability for PD to perform a raid on a lab if they find it
 
+# AI mission / bulk sell large quant
+onMission = false
+
+while onMission == true
+    Create thread
+        check how many packages on player
+            check how many packages deposited
+                if packages deposited == config.missionAmount
+                    end job
+                    onMission = false
+                    payout config.payout
+                end
+            end
+        end
+    end
+end
