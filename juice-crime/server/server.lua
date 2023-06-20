@@ -20,19 +20,49 @@ local Query = {
     UPDATE = 'UPDATE `gang-lab` SET data = ? WHERE id = ?',
 }
 
+
 CreateThread(function()
-    local success, result = pcall(MySQL.scalar.await, 'SELECT 1 FROM `gang-lab`')
+    local success, result = pcall(MySQL.scalar.await, 'SELECT 1 FROM `gang_labs`')
 
     if not success then
-        MySQL.query([[CREATE TABLE `gang-lab` (
-            `id` int(11) DEFAULT NULL,
-            `gang_owner` varchar(46) DEFAULT NULL,
-            `lab_type` longtext DEFAULT NULL,
-            `lab_price` int(11) DEFAULT NULL,
-            `lab_fee` int(11) DEFAULT NULL,
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-		]])
-
-        print('^5UNIQ^2 Database installed successfully^0')
+        MySQL.query([[CREATE TABLE `gang_labs` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT,
+            `gang_name` VARCHAR(255) NOT NULL,
+            `lab_type` VARCHAR(50) NOT NULL,
+            `lab_price` INT(11) NOT NULL,
+            `lab_fee` INT(11) NOT NULL,
+            `payment_cycles` INT(11) NOT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        ]])
+        print('^5Gang Labs Table Created^0')
     end
+end)
+
+RegisterServerEvent('gangs:purchaseLab')
+AddEventHandler('gangs:purchaseLab', function(gangName, labType)
+    local labPrice = Config.LabPrice[labType]
+    local labFee = Config.LabFee[labType]
+    local paymentCycles = Config.GracePeriod
+
+    -- Check if the gang has enough money
+    -- Deduct money from the gang's account
+
+    -- Insert the lab data into the database
+    local insertQuery = 'INSERT INTO `gang_labs` (gang_name, lab_type, lab_price, lab_fee, payment_cycles) VALUES (@gangName, @labType, @labPrice, @labFee, @paymentCycles)'
+    local params = {
+        ['@gangName'] = gangName,
+        ['@labType'] = labType,
+        ['@labPrice'] = labPrice,
+        ['@labFee'] = labFee,
+        ['@paymentCycles'] = paymentCycles
+    }
+    MySQL.Async.execute(insertQuery, params, function(rowsChanged)
+        -- Handle success or failure
+        if rowsChanged > 0 then
+            print(labType, "has been added to the database")
+        else
+            print('Failed to update labs in database')
+        end
+    end)
 end)
