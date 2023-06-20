@@ -1,3 +1,21 @@
+Config = {}
+
+Config.totalLabs = 6 --- Total number of labs available to be owned at any given time
+
+Config.LabPrice = {
+    ["meth"] = 100000, -- Price for purchasing a meth lab
+    ["coke"] = 150000, -- Price for purchasing a coke lab
+    ["weed"] = 75000 -- Price for purchasing a weed lab
+}
+
+Config.LabFee = {
+    ["meth"] = 5000, -- Upkeep fee for a meth lab
+    ["coke"] = 7500, -- Upkeep fee for a coke lab
+    ["weed"] = 4000 -- Upkeep fee for a weed lab
+}
+Config.GracePeriod = 3 -- Number of payment cycles allowed before losing the lab
+
+
 -------------------------------- configuration options for script
 
 --- Reputation
