@@ -39,8 +39,8 @@ CreateThread(function()
     end
 end)
 
-RegisterServerEvent('gangs:purchaseLab')
-AddEventHandler('gangs:purchaseLab', function(gangName, labType)
+RegisterNetEvent('juice-crime:server:purchaseLab')
+AddEventHandler('juice-crime:server:purchaseLab', function(gangName, labType)
     local labPrice = Config.LabPrice[labType]
     local labFee = Config.LabFee[labType]
     local paymentCycles = Config.GracePeriod
@@ -65,4 +65,12 @@ AddEventHandler('gangs:purchaseLab', function(gangName, labType)
             print('Failed to update labs in database')
         end
     end)
+end)
+
+lib.cron.new('* * * * 2', function() -- Every week on Monday
+    TriggerEvent('juice-crime:server:upkeep')
+end)
+
+RegisterNetEvent('juice-crime:server:upkeep', function()
+    
 end)
